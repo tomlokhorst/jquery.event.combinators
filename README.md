@@ -13,6 +13,8 @@ Examples
 
 `.whenAll()` triggers the event handler when all buttons have been clicked, instead of just one of them.
 
+----
+
 
     $('input[type=button]').ignoreUntil('click').bind('mouseover', function(e)
     {
