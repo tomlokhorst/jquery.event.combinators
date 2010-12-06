@@ -19,7 +19,7 @@
         if (typeof type === "object")
         {
           for (var key in type)
-            originalFn.call(self, key, data, type[key], fn);
+            self[nm].call(self, key, data, type[key], fn);
       
           return self;
         }
@@ -62,7 +62,7 @@
       if (typeof type === "object")
       {
         for (var key in type)
-          originalFn.call(self, key, data, type[key], fn);
+          self[nm].call(self, key, data, type[key], fn);
 
         return self;
       }
@@ -106,7 +106,7 @@
         if (typeof type === "object")
         {
           for (var key in type)
-            originalFn.call(self, key, data, type[key], fn);
+            self[nm].call(self, key, data, type[key], fn);
 
           return self;
         }
