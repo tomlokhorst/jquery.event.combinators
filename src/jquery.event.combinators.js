@@ -171,6 +171,69 @@
   };
 
 
+  jQuery.fn.replayAfter = function(sel, outerType, bufferSize)
+  {
+    if (typeof sel == "string")
+    {
+      outerType = sel;
+      bufferSize = outerType;
+      sel = this;
+    }
+
+    if (bufferSize == undefined)
+      bufferSize = 1;
+    if (bufferSize == "all")
+      bufferSize = -1;
+
+    var self = this;
+
+    var originalOne = this.one;
+    jQuery.each(["bind", "one"], function (_, nm)
+    {
+      var originalFn = self[nm];
+      self[nm] = function(type, data, fn)
+      {
+        if (typeof type === "object")
+        {
+          for (var key in type)
+            self[nm].call(self, key, data, type[key], fn);
+
+          return self;
+        }
+
+        if (jQuery.isFunction(data) || data === false)
+        {
+          fn = data;
+          data = undefined;
+        }
+
+        var buffer = [];
+        var handler = function ()
+        {
+          buffer.push(arguments);
+          if (bufferSize > 0 && buffer.length > bufferSize)
+            buffer.shift();
+        }
+        originalFn.call(self, type, handler);
+
+        originalOne.call(sel, outerType, function ()
+        {
+          self.unbind(type, handler);
+          originalFn.call(self, type, data, fn);
+
+          $(buffer).each(function (_, args)
+          {
+            fn.apply(self, args);
+          });
+          buffer = null;
+        });
+      };
+    });
+
+    return this;
+  };
+
+
   function transpose(xs)
   {
     if (!xs || !xs.length || !xs[0].length) return [];
