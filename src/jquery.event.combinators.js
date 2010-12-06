@@ -53,6 +53,7 @@
     return this;
   };
 
+
   jQuery.fn.whenAny = function()
   {
     var originalOne = this.one;
@@ -84,6 +85,48 @@
 
     return this;
   };
+
+
+  jQuery.fn.ignoreUntil = function(sel, otype)
+  {
+    if (typeof sel == "string")
+    {
+      otype = sel;
+      sel = this;
+    }
+
+    var self = this;
+
+    var originalOne = this.one;
+    jQuery.each(["bind", "one"], function (_, nm)
+    {
+      var originalFn = self[nm];
+      self[nm] = function(type, data, fn)
+      {
+        if (typeof type === "object")
+        {
+          for (var key in type)
+            originalFn.call(self, key, data, type[key], fn);
+
+          return self;
+        }
+
+        if (jQuery.isFunction(data) || data === false)
+        {
+          fn = data;
+          data = undefined;
+        }
+
+        originalOne.call(sel, otype, function ()
+        {
+          originalFn.call(self, type, data, fn);
+        });
+      };
+    });
+
+    return this;
+  };
+
 
   function transpose(xs)
   {
