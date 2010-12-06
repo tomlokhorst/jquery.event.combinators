@@ -50,7 +50,11 @@
       };
     });
 
+    return this;
+  };
 
+  jQuery.fn.whenAny = function()
+  {
     return this;
   };
 
