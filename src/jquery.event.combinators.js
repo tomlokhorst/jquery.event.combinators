@@ -171,6 +171,47 @@
   };
 
 
+  jQuery.each(["bind", "one"], function (_, nm)
+  {
+    var originalFn = jQuery.fn[nm];
+    jQuery.fn[nm + "All"] = function(types, data, fn)
+    {
+      if (!jQuery.isArray(types) && typeof types === "object")
+      {
+        for (var key in types)
+          this[nm + "All"].call(this, key, data, types[key], fn);
+
+        return this;
+      }
+
+      if (jQuery.isFunction(data) || data === false)
+      {
+        fn = data;
+        data = undefined;
+      }
+
+      var self = this;
+      var ln = types.length;
+      var args = [];
+
+      $(types).each(function (i, type)
+      {
+        originalFn.call(self, type, data, function()
+        {
+          args[i] = arguments;
+
+          for (var j = 0; j < ln; j++)
+            if (!args[j])
+              return;
+
+          fn.apply(self, transpose(args));
+          args = [];
+        });
+      });
+    };
+  });
+
+
   jQuery.fn.replayAfter = function(sel, outerType, bufferSize)
   {
     if (typeof sel == "string")
