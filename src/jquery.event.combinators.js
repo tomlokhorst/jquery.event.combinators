@@ -87,11 +87,11 @@
   };
 
 
-  jQuery.fn.ignoreUntil = function(sel, otype)
+  jQuery.fn.ignoreUntil = function(sel, outerType)
   {
     if (typeof sel == "string")
     {
-      otype = sel;
+      outerType = sel;
       sel = this;
     }
 
@@ -117,7 +117,7 @@
           data = undefined;
         }
 
-        originalOne.call(sel, otype, function ()
+        originalOne.call(sel, outerType, function ()
         {
           originalFn.call(self, type, data, fn);
         });
@@ -128,11 +128,11 @@
   };
 
 
-  jQuery.fn.ignoreAfter = function(sel, otype)
+  jQuery.fn.ignoreAfter = function(sel, outerType)
   {
     if (typeof sel == "string")
     {
-      otype = sel;
+      outerType = sel;
       sel = this;
     }
 
@@ -158,7 +158,7 @@
           data = undefined;
         }
 
-        originalOne.call(sel, otype, function ()
+        originalOne.call(sel, outerType, function ()
         {
           self.unbind(type, fn);
         });
