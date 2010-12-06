@@ -128,6 +128,49 @@
   };
 
 
+  jQuery.fn.ignoreAfter = function(sel, otype)
+  {
+    if (typeof sel == "string")
+    {
+      otype = sel;
+      sel = this;
+    }
+
+    var self = this;
+
+    var originalOne = this.one;
+    jQuery.each(["bind", "one"], function (_, nm)
+    {
+      var originalFn = self[nm];
+      self[nm] = function(type, data, fn)
+      {
+        if (typeof type === "object")
+        {
+          for (var key in type)
+            self[nm].call(self, key, data, type[key], fn);
+
+          return self;
+        }
+
+        if (jQuery.isFunction(data) || data === false)
+        {
+          fn = data;
+          data = undefined;
+        }
+
+        originalOne.call(sel, otype, function ()
+        {
+          self.unbind(type, fn);
+        });
+
+        originalFn.call(self, type, data, fn);
+      };
+    });
+
+    return this;
+  };
+
+
   function transpose(xs)
   {
     if (!xs || !xs.length || !xs[0].length) return [];
