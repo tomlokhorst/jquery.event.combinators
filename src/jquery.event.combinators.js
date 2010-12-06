@@ -55,6 +55,33 @@
 
   jQuery.fn.whenAny = function()
   {
+    var originalOne = this.one;
+    this.one = function(type, data, fn)
+    {
+      if (typeof type === "object")
+      {
+        for (var key in type)
+          originalFn.call(self, key, data, type[key], fn);
+
+        return self;
+      }
+
+      if (jQuery.isFunction(data) || data === false)
+      {
+        fn = data;
+        data = undefined;
+      }
+
+      var self = this;
+      var handler = function (e)
+      {
+        self.unbind(e, handler);
+        return fn.apply(self, arguments);
+      }
+
+      originalOne.call(this, type, data, handler);
+    };
+
     return this;
   };
 
