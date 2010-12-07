@@ -19,8 +19,8 @@
         if (typeof type === "object")
         {
           for (var key in type)
-            self[nm].call(self, key, data, type[key], fn);
-      
+            self[nm](key, data, type[key], fn);
+
           return self;
         }
         
@@ -66,7 +66,7 @@
       if (typeof type === "object")
       {
         for (var key in type)
-          self[nm].call(self, key, data, type[key], fn);
+          this.one(key, data, type[key], fn);
 
         return self;
       }
@@ -111,7 +111,7 @@
         if (typeof type === "object")
         {
           for (var key in type)
-            self[nm].call(self, key, data, type[key], fn);
+            self[nm](key, data, type[key], fn);
 
           return self;
         }
@@ -154,7 +154,7 @@
         if (typeof type === "object")
         {
           for (var key in type)
-            self[nm].call(self, key, data, type[key], fn);
+            self[nm](key, data, type[key], fn);
 
           return self;
         }
@@ -185,14 +185,6 @@
     var originalFn = jQuery.fn[nm];
     jQuery.fn[nm + "All"] = function(types, data, fn)
     {
-      if (!jQuery.isArray(types) && typeof types === "object")
-      {
-        for (var key in types)
-          this[nm + "All"].call(this, key, data, types[key], fn);
-
-        return this;
-      }
-
       if (jQuery.isFunction(data) || data === false)
       {
         fn = data;
