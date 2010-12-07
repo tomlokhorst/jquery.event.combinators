@@ -35,7 +35,7 @@
         var args = [];
         self.each(function (i, o)
         {
-          originalFn.call($(o), type, function ()
+          originalFn.call($(o), type, data, function ()
           {
             args[i] = arguments;
             
@@ -289,7 +289,7 @@
           if (bufferSize > 0 && buffer.length > bufferSize)
             buffer.shift();
         }
-        originalFn.call(self, type, handler);
+        originalFn.call(self, type, data, handler);
 
         originalOne.call(sel, outerType, function ()
         {
