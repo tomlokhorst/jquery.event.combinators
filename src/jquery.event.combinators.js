@@ -47,6 +47,8 @@
             args = [];
           });
         });
+
+        return self;
       };
     });
 
@@ -56,6 +58,8 @@
 
   jQuery.fn.whenAny = function()
   {
+    var self = this;
+
     var originalOne = this.one;
     this.one = function(type, data, fn)
     {
@@ -73,7 +77,6 @@
         data = undefined;
       }
 
-      var self = this;
       var handler = function (e)
       {
         self.unbind(e, handler);
@@ -81,6 +84,8 @@
       }
 
       originalOne.call(this, type, data, handler);
+
+      return self;
     };
 
     return this;
@@ -121,6 +126,8 @@
         {
           originalFn.call(self, type, data, fn);
         });
+
+        return self;
       };
     });
 
@@ -164,6 +171,8 @@
         });
 
         originalFn.call(self, type, data, fn);
+
+        return self;
       };
     });
 
@@ -208,6 +217,31 @@
           args = [];
         });
       });
+
+      return this;
+    };
+  });
+
+
+  jQuery.each(["bind", "one"], function (_, nm)
+  {
+    var originalFn = jQuery.fn[nm];
+    jQuery.fn[nm + "Both"] = function(type1, type2, data, fn)
+    {
+      if (jQuery.isFunction(data) || data === false)
+      {
+        fn = data;
+        data = undefined;
+      }
+
+      var self = this;
+      this[nm + "All"]([type1, type2], data, function()
+      {
+        var args = transpose(arguments);
+        fn.apply(self, args[0].concat(args[1]));
+      });
+
+      return this;
     };
   });
 
@@ -268,6 +302,8 @@
           });
           buffer = null;
         });
+
+        return self;
       };
     });
 
