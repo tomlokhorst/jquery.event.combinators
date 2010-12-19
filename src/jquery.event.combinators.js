@@ -35,7 +35,7 @@
         var args = [];
         self.each(function (i, o)
         {
-          originalFn.call($(o), type, data, function ()
+          var handler = function ()
           {
             args[i] = arguments;
             
@@ -45,7 +45,9 @@
   
             fn.apply(self, transpose(args));
             args = [];
-          });
+          };
+
+          originalFn.call($(o), type, data, handler);
         });
 
         return self;
