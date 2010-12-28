@@ -1,17 +1,17 @@
 /*!
- * jQuery Event Combinators
+ * $ Event Combinators
  * 
  * Copyright (c) 2010, Tom Lokhorst
  * Released under BSD license, see LICENSE file.
  */
 
-(function ()
+(function ($)
 {
-  jQuery.fn.whenAll = function()
+  $.fn.whenAll = function()
   {
     var self = this;
 
-    jQuery.each(["bind", "one"], function (_, nm)
+    $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
       self[nm] = function(type, data, fn)
@@ -24,7 +24,7 @@
           return self;
         }
         
-        if (jQuery.isFunction(data) || data === false)
+        if ($.isFunction(data) || data === false)
         {
           fn = data;
           data = undefined;
@@ -56,7 +56,7 @@
   };
 
 
-  jQuery.fn.whenAny = function()
+  $.fn.whenAny = function()
   {
     var self = this;
 
@@ -71,7 +71,7 @@
         return self;
       }
 
-      if (jQuery.isFunction(data) || data === false)
+      if ($.isFunction(data) || data === false)
       {
         fn = data;
         data = undefined;
@@ -92,7 +92,7 @@
   };
 
 
-  jQuery.fn.ignoreUntil = function(sel, outerType)
+  $.fn.ignoreUntil = function(sel, outerType)
   {
     if (typeof sel == "string")
     {
@@ -103,7 +103,7 @@
     var self = this;
 
     var originalOne = this.one;
-    jQuery.each(["bind", "one"], function (_, nm)
+    $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
       self[nm] = function(type, data, fn)
@@ -116,7 +116,7 @@
           return self;
         }
 
-        if (jQuery.isFunction(data) || data === false)
+        if ($.isFunction(data) || data === false)
         {
           fn = data;
           data = undefined;
@@ -135,7 +135,7 @@
   };
 
 
-  jQuery.fn.ignoreAfter = function(sel, outerType)
+  $.fn.ignoreAfter = function(sel, outerType)
   {
     if (typeof sel == "string")
     {
@@ -146,7 +146,7 @@
     var self = this;
 
     var originalOne = this.one;
-    jQuery.each(["bind", "one"], function (_, nm)
+    $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
       self[nm] = function(type, data, fn)
@@ -159,7 +159,7 @@
           return self;
         }
 
-        if (jQuery.isFunction(data) || data === false)
+        if ($.isFunction(data) || data === false)
         {
           fn = data;
           data = undefined;
@@ -180,12 +180,12 @@
   };
 
 
-  jQuery.each(["bind", "one"], function (_, nm)
+  $.each(["bind", "one"], function (_, nm)
   {
-    var originalFn = jQuery.fn[nm];
-    jQuery.fn[nm + "All"] = function(types, data, fn)
+    var originalFn = $.fn[nm];
+    $.fn[nm + "All"] = function(types, data, fn)
     {
-      if (jQuery.isFunction(data) || data === false)
+      if ($.isFunction(data) || data === false)
       {
         fn = data;
         data = undefined;
@@ -215,12 +215,12 @@
   });
 
 
-  jQuery.each(["bind", "one"], function (_, nm)
+  $.each(["bind", "one"], function (_, nm)
   {
-    var originalFn = jQuery.fn[nm];
-    jQuery.fn[nm + "Both"] = function(type1, type2, data, fn)
+    var originalFn = $.fn[nm];
+    $.fn[nm + "Both"] = function(type1, type2, data, fn)
     {
-      if (jQuery.isFunction(data) || data === false)
+      if ($.isFunction(data) || data === false)
       {
         fn = data;
         data = undefined;
@@ -238,7 +238,7 @@
   });
 
 
-  jQuery.fn.replayAfter = function(sel, outerType, bufferSize)
+  $.fn.replayAfter = function(sel, outerType, bufferSize)
   {
     if (typeof sel == "string")
     {
@@ -255,7 +255,7 @@
     var self = this;
 
     var originalOne = this.one;
-    jQuery.each(["bind", "one"], function (_, nm)
+    $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
       self[nm] = function(type, data, fn)
@@ -268,7 +268,7 @@
           return self;
         }
 
-        if (jQuery.isFunction(data) || data === false)
+        if ($.isFunction(data) || data === false)
         {
           fn = data;
           data = undefined;
@@ -321,5 +321,5 @@
    
     return ys;
   };
-})();
+})(jQuery);
 
