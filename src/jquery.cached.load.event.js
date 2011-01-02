@@ -38,8 +38,8 @@
 
           // Construct load event object.
           var e = $.Event("load");
-          e.target = this;
-          e.currentTarget = this;
+          e.target = self;
+          e.currentTarget = self;
           e.data = handleObj.data;
 
           $(self).trigger(e);
