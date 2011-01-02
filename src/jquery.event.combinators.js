@@ -94,7 +94,7 @@
 
   $.fn.ignoreUntil = function(sel, outerType)
   {
-    if (typeof sel == "string")
+    if (typeof sel === "string")
     {
       outerType = sel;
       sel = this;
@@ -137,7 +137,7 @@
 
   $.fn.ignoreAfter = function(sel, outerType)
   {
-    if (typeof sel == "string")
+    if (typeof sel === "string")
     {
       outerType = sel;
       sel = this;
@@ -240,16 +240,16 @@
 
   $.fn.replayAfter = function(sel, outerType, bufferSize)
   {
-    if (typeof sel == "string")
+    if (typeof sel === "string")
     {
       outerType = sel;
       bufferSize = outerType;
       sel = this;
     }
 
-    if (bufferSize == undefined)
+    if (typeof bufferSize === "undefined")
       bufferSize = 1;
-    if (bufferSize == "all")
+    if (bufferSize === "all")
       bufferSize = -1;
 
     var self = this;
