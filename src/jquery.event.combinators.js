@@ -303,6 +303,48 @@
   };
 
 
+  $.fn.delayFor = function(milliSeconds)
+  {
+    var self = this;
+
+    $.each(["bind", "one"], function (_, nm)
+    {
+      var originalFn = self[nm];
+      self[nm] = function(type, data, fn)
+      {
+        if (typeof type === "object")
+        {
+          for (var key in type)
+            self[nm].call(self, key, data, type[key], fn);
+
+          return self;
+        }
+
+        if ($.isFunction(data) || data === false)
+        {
+          fn = data;
+          data = undefined;
+        }
+
+        var handler = function ()
+        {
+          var args = arguments;
+
+          setTimeout(function ()
+          {
+            fn.apply(self, args);
+          }, milliSeconds);
+        }
+        originalFn.call(self, type, data, handler);
+
+        return self;
+      };
+    });
+
+    return this;
+  };
+
+
   function transpose(xs)
   {
     if (!xs || !xs.length || !xs[0].length) return [];
