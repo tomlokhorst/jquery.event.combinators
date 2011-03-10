@@ -1,5 +1,5 @@
 /*!
- * $ Event Combinators
+ * jQuery Event Combinators
  * 
  * Copyright (c) 2010, Tom Lokhorst
  * Released under BSD license, see LICENSE file.

@@ -14,17 +14,17 @@
       // Use native DOM methods.
       return false;
     },
-    
+
     add: function (handleObj)
     {
-      // Only for objects with .complete property that is true.
-      if (this.complete)
+      // Only for images with .complete property that is true and have a trueish .width property
+      if (this.complete && this.width)
       {
         var self = this;
         var triggeredNative = false;
         var handler = handleObj.handler;
 
-        handleObj.handler = function()
+        handleObj.handler = function ()
         {
           // Handler called for first time (possibly by browser).
           triggeredNative = true;
@@ -47,5 +47,5 @@
       }
     }
   };
-}(jQuery));
+} (jQuery));
 
