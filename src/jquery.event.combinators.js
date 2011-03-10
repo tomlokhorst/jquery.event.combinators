@@ -9,7 +9,7 @@
 {
   $.fn.whenAll = function()
   {
-    var self = this;
+    var self = $(this);
 
     $.each(["bind", "one"], function (_, nm)
     {
@@ -54,21 +54,21 @@
       };
     });
 
-    return this;
+    return self;
   };
 
 
   $.fn.whenAny = function()
   {
-    var self = this;
+    var self = $(this);
 
-    var originalOne = this.one;
-    this.one = function(type, data, fn)
+    var originalOne = self.one;
+    self.one = function(type, data, fn)
     {
       if (typeof type === "object")
       {
         for (var key in type)
-          this.one(key, data, type[key], fn);
+          self.one(key, data, type[key], fn);
 
         return self;
       }
@@ -85,26 +85,26 @@
         return fn.apply(self, arguments);
       }
 
-      originalOne.call(this, type, data, handler);
+      originalOne.call(self, type, data, handler);
 
       return self;
     };
 
-    return this;
+    return self;
   };
 
 
   $.fn.ignoreUntil = function(sel, outerType)
   {
+    var self = $(this);
+
     if (typeof sel === "string")
     {
       outerType = sel;
-      sel = this;
+      sel = self;
     }
 
-    var self = this;
-
-    var originalOne = this.one;
+    var originalOne = self.one;
     $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
@@ -133,21 +133,21 @@
       };
     });
 
-    return this;
+    return self;
   };
 
 
   $.fn.ignoreAfter = function(sel, outerType)
   {
+    var self = $(this);
+
     if (typeof sel === "string")
     {
       outerType = sel;
-      sel = this;
+      sel = self;
     }
 
-    var self = this;
-
-    var originalOne = this.one;
+    var originalOne = self.one;
     $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
@@ -178,7 +178,7 @@
       };
     });
 
-    return this;
+    return self;
   };
 
 
@@ -187,13 +187,14 @@
     var originalFn = $.fn[nm];
     $.fn[nm + "All"] = function(types, data, fn)
     {
+      var self = $(this);
+
       if ($.isFunction(data) || data === false)
       {
         fn = data;
         data = undefined;
       }
 
-      var self = this;
       var ln = types.length;
       var args = [];
 
@@ -212,7 +213,7 @@
         });
       });
 
-      return this;
+      return self;
     };
   });
 
@@ -222,31 +223,34 @@
     var originalFn = $.fn[nm];
     $.fn[nm + "Both"] = function(type1, type2, data, fn)
     {
+      var self = $(this);
+
       if ($.isFunction(data) || data === false)
       {
         fn = data;
         data = undefined;
       }
 
-      var self = this;
-      this[nm + "All"]([type1, type2], data, function()
+      self[nm + "All"]([type1, type2], data, function()
       {
         var args = transpose(arguments);
         fn.apply(self, args[0].concat(args[1]));
       });
 
-      return this;
+      return self;
     };
   });
 
 
   $.fn.replayAfter = function(sel, outerType, bufferSize)
   {
+    var self = $(this);
+
     if (typeof sel === "string")
     {
       outerType = sel;
       bufferSize = outerType;
-      sel = this;
+      sel = self;
     }
 
     if (typeof bufferSize === "undefined")
@@ -254,9 +258,7 @@
     if (bufferSize === "all")
       bufferSize = -1;
 
-    var self = this;
-
-    var originalOne = this.one;
+    var originalOne = self.one;
     $.each(["bind", "one"], function (_, nm)
     {
       var originalFn = self[nm];
@@ -301,13 +303,13 @@
       };
     });
 
-    return this;
+    return self;
   };
 
 
   $.fn.delayFor = function(milliSeconds)
   {
-    var self = this;
+    var self = $(this);
 
     $.each(["bind", "one"], function (_, nm)
     {
@@ -343,7 +345,7 @@
       };
     });
 
-    return this;
+    return self;
   };
 
 
