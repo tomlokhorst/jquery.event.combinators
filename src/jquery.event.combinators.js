@@ -349,6 +349,60 @@
   };
 
 
+  $.fn.bufferFor = function(milliSeconds, bufferSize)
+  {
+    var self = $(this);
+
+    if (typeof bufferSize === "undefined")
+      bufferSize = 1;
+    if (bufferSize === "all")
+      bufferSize = -1;
+
+    $.each(["bind", "one"], function (_, nm)
+    {
+      var originalFn = self[nm];
+      self[nm] = function(type, data, fn)
+      {
+        if (typeof type === "object")
+        {
+          for (var key in type)
+            self[nm].call(self, key, data, type[key], fn);
+
+          return self;
+        }
+
+        if ($.isFunction(data) || data === false)
+        {
+          fn = data;
+          data = undefined;
+        }
+
+        var buffer = [];
+        var handler = function ()
+        {
+          buffer.push(arguments);
+          if (bufferSize > 0 && buffer.length > bufferSize)
+            buffer.shift();
+        }
+        originalFn.call(self, type, data, handler);
+
+        setInterval(function ()
+        {
+          if (buffer.length)
+          {
+            var args = buffer.shift();
+            fn.apply(self, args);
+          }
+        }, milliSeconds);
+
+        return self;
+      };
+    });
+
+    return self;
+  };
+
+
   function transpose(xs)
   {
     if (!xs || !xs.length || !xs[0].length) return [];
